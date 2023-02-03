@@ -19,6 +19,13 @@
 TypeScript + BabylonJS (+ SolidJS)
 
 
+canvas_diffuse, canvas_bump, ...
+  それぞれ engine, scene 作る
+  画面いっぱいにレンダ
+canvas_view
+  box に StandardMaterial
+  material.diffuseTexture, .bumpTexture に DynamicTexture 割り当て
+
 BabylonJS試用
 モデル+テクスチャの表示
 モデル情報を用いて新規テクスチャを描画
