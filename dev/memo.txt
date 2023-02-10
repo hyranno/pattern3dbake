@@ -38,25 +38,19 @@ faceをテクスチャ(color, bump, etc...)に描画していく
   描画位置はUVに依存
   色は3Dモデル上の座標に依存
   法線も欲しい
+material.diffuseTexture, .bumpTexture に texture 割り当て
+  canvas経由のDynamicTextureじゃないとengine用canvasのサイズに制限される?
 
+canvasでなくテクスチャに描画する?
+  camera.customRenderTarget
+  camera.renderTargetTexture
+前段のテクスチャを参照はしない
+  加算・乗算など
+  パスが増えるのも嫌だし、シェーダ1つで全部済ませてくれ
+元のテクスチャの上から描画(不使用)
+  mesh_copy.renderingGroupId = 0
+  mesh_noise.renderingGroupId = 1
 
-
-babylonJS、この用途では扱いづらくない?
-  Rhodonite, ThreeJS とかどうなん
-
-
-素の状態を表示するengine
-テクスチャいじる用のengine(multiCanvas)
-編集後モデルを表示するengine
-
-camera.customRenderTarget
-camera.renderTargetTexture
-
-scene間でmeshの共有は難しそう
-  layerMask を使って multi camera + multi canvas?
-  multiCanvas
-    https://doc.babylonjs.com/features/featuresDeepDive/scene/multiCanvas
-    https://codepen.io/dmystk/pen/jOMZxeo
 
 gltfつかう?
   https://doc.babylonjs.com/features/featuresDeepDive/importers/glTF
@@ -67,3 +61,6 @@ vrmつかう?
   人型のモデルのみになる
   babylon-vrm-loader
     babylon 5 系には対応してないっぽい
+
+babylonJSは左手系(+zが奥方向)
+scene間でmeshの共有は難しそう
