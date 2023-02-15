@@ -6,9 +6,10 @@ import * as babylon from "babylonjs";
 import 'babylonjs-loaders';
 // import "babylon-vrm-loader";  // outdated?
 
-import textureVertShader from 'shaders/texture.glsl.vert?raw';
-import plainFragShader from 'shaders/plain.glsl.frag?raw';
-import copyFragShader from 'shaders/copy.glsl.frag?raw';
+import textureVertShader from 'shaders/texture.glsl.vert';
+import plainFragShader from 'shaders/plain.glsl.frag';
+import copyFragShader from 'shaders/copy.glsl.frag';
+import voronoiFragShader from 'shaders/voronoi.glsl.frag';
 
 import sampleModelUrl from '../assets/sample.glb?url';
 
@@ -107,7 +108,7 @@ const App: Component = () => {
         let target = meshes[12] as babylon.Mesh;
         let material = new babylon.ShaderMaterial("shader", scene_work, {
           vertexSource: textureVertShader,
-          fragmentSource: plainFragShader,
+          fragmentSource: voronoiFragShader,
         }, {
           attributes: ["position", "normal", "uv"],
           uniforms: ["resolution"],
