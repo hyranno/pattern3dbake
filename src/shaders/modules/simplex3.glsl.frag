@@ -1,21 +1,12 @@
 
-mat3 calc_simplex3_coord_basis() {
-  const float angle0 = acos(1.0/3.0);
-  const float angle1 = 2.0*radians(180.0)/3.0;
-  const vec2 v0 = vec2(cos(angle0), sin(angle0));
-  const vec2 v1 = vec2(cos(angle1), sin(angle1));
-  return mat3(
-    vec3(v0.x, v0.y*vec2(1.0, 0.0)),
-    vec3(v0.x, v0.y*v1),
-    vec3(v0.x, v0.y*vec2(v1.x, -v1.y))
-  );
-}
+const mat3 simplex3_coord_basis = mat3(1.0) + 1.0/3.0;
+const mat3 simplex3_coord_inverse = inverse(simplex3_coord_basis);
 
 vec3 simplex3_from_orthogonal(vec3 p) {
-  return p * calc_simplex3_coord_basis();
+  return p * simplex3_coord_basis;
 }
 vec3 simplex3_to_orthogonal(vec3 p) {
-  return p * inverse(calc_simplex3_coord_basis());
+  return p * simplex3_coord_inverse;
 }
 
 vec3[4] calc_simplex3_corners(vec3 p) {

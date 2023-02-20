@@ -27,3 +27,12 @@ float polynomial(float[8] c, float x) {
   }
 IMPLEMENT_SWAP(float)
 IMPLEMENT_SWAP(int)
+
+
+vec3 calc_normal(vec3[3] face) {
+  return normalize(cross(face[1]-face[0], face[2]-face[0]));
+}
+
+float distance_from_plane(vec3 p, vec3[3] face) {
+  return abs(dot(p-face[0], calc_normal(face)));
+}
