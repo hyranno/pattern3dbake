@@ -12,6 +12,7 @@ import copyFragShader from 'shaders/copy.glsl.frag';
 import voronoiFragShader from 'shaders/voronoi.glsl.frag';
 import voronoiTiledFragShader from 'shaders/voronoi_tiled.glsl.frag';
 import valueNoiseFragShader from 'shaders/value_noise.glsl.frag';
+import simplexNoiseFragShader from 'shaders/simplex_noise.glsl.frag';
 
 import sampleModelUrl from '../assets/sample.glb?url';
 
@@ -110,7 +111,7 @@ const App: Component = () => {
         let target = meshes[12] as babylon.Mesh;
         let material = new babylon.ShaderMaterial("shader", scene_work, {
           vertexSource: textureVertShader,
-          fragmentSource: valueNoiseFragShader,
+          fragmentSource: simplexNoiseFragShader,
         }, {
           attributes: ["position", "normal", "uv"],
           uniforms: ["resolution"],

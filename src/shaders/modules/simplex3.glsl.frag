@@ -35,3 +35,16 @@ vec3[4] calc_simplex3_corners_ortho(vec3 p_ortho) {
   }
   return corners;
 }
+
+vec4 calc_corner_closeness(vec3 point, vec3[4] corners) {
+  vec3[3] face0 = vec3[](corners[1], corners[2], corners[3]);
+  vec3[3] face1 = vec3[](corners[0], corners[2], corners[3]);
+  vec3[3] face2 = vec3[](corners[0], corners[1], corners[3]);
+  vec3[3] face3 = vec3[](corners[0], corners[1], corners[2]);
+  return vec4(
+    distance_from_plane(point, face0) / distance_from_plane(corners[0], face0),
+    distance_from_plane(point, face1) / distance_from_plane(corners[1], face1),
+    distance_from_plane(point, face2) / distance_from_plane(corners[2], face2),
+    distance_from_plane(point, face3) / distance_from_plane(corners[3], face3)
+  );
+}

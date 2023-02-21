@@ -21,6 +21,13 @@ vec2 rand_normal(vec2 p, float salt) {
 float rand_normal(vec3 p) {
   return rand_normal(p.xy, p.z).x;
 }
+vec3 rand_normal_vec3(vec3 p) {
+  return vec3(
+    rand_normal(p.x, p.y),
+    rand_normal(p.y, p.z),
+    rand_normal(p.z, p.x)
+  );
+}
 
 float rand_exponential (float v, float salt) { // inversion method
   return -log(1.0 - rand_uniform(v, salt));
