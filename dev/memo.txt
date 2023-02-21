@@ -36,7 +36,8 @@ TypeScript + BabylonJS (+ SolidJS)
 
 
 TODO s
-  simplex_noise3d
+  fractionalBrownianMotion
+  TriplanarMapping
 
 canvasがアルファ値を保存してないのでは
   textureに直にレンダリングする必要がある?
@@ -63,11 +64,8 @@ vite-plugin-glsl でシェーダを管理する
   GradientNoise(Perlin, Simplex, OpenSimplex)
 
 canvas_diffuse, canvas_bump, ...
-  それぞれ engine, scene 作る
-  画面いっぱいにレンダ
 canvas_view
-  box に StandardMaterial
-  material.diffuseTexture, .bumpTexture に DynamicTexture 割り当て
+  material.diffuseTexture, .bumpTexture, ... に DynamicTexture 割り当て
 
 メッシュをvertexシェーダでUVに展開
   頂点のUV情報に従う(メッシュを実行時生成する場合、UVも生成する)

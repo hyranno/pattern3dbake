@@ -70,3 +70,21 @@ float simplex_noise3d(vec3 point) {
     )
   );
 }
+
+
+float fractional_brownian_motion(vec3 point, int depth, float decay) {
+  float result = 0.0;
+  const mat4 octave_salt = mat4(mat3(2.0))  // scale
+    * mat4(mat3(mat2(cos(0.8), sin(0.8), -sin(0.8), cos(0.8))))  // rotate
+    * mat4(mat3(1.0,0.0,0.0, 0.0,cos(1.8),sin(1.8), 0.0,-sin(1.8),cos(1.8)))  // rotate
+    * mat4(mat3x4(vec3(1.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0), vec3(0.0, 0.0, 1.0), vec3(123.2, 214.3, 455.4)))  // translate
+  ;
+  vec4 p = vec4(point, 1.0);
+  float weight = 1.0;
+  for (int i=0; i<depth; i++) {
+    result += weight * simplex_noise3d(p.xyz);
+    weight *= decay;
+    p = octave_salt * p;
+  }
+  return result;
+}
