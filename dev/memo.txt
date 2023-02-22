@@ -36,8 +36,12 @@ TypeScript + BabylonJS (+ SolidJS)
 
 
 TODO s
-  fractionalBrownianMotion
+  元のテクスチャの上に描画する
   TriplanarMapping
+    Sphereか何かを置いてShaderMaterialでTriplanarMappingを付ける
+    何か適当な2dテクスチャを生成する
+  HexTiled TriplanarMapping
+  より具体的なマテリアル
 
 canvasがアルファ値を保存してないのでは
   textureに直にレンダリングする必要がある?
@@ -82,9 +86,16 @@ canvasでなくテクスチャに描画する?
 前段のテクスチャを参照はしない
   加算・乗算など
   パスが増えるのも嫌だし、シェーダ1つで全部済ませてくれ
-元のテクスチャの上から描画(不使用)
+元のテクスチャの上から描画
+  CopyTextureToTexture
+  clearしないで描画
+    scene.autoClear = false;
+  /*
   mesh_copy.renderingGroupId = 0
   mesh_noise.renderingGroupId = 1
+  */
+特定のカメラにのみ描画
+  layer masks
 
 
 gltfつかう?
@@ -99,3 +110,6 @@ vrmつかう?
 
 babylonJSは左手系(+zが奥方向)
 scene間でmeshの共有は難しそう
+
+これはマテリアルに対するものだが、メッシュに対しても同様のことが言える
+ジオメトリシェーダなどで変形後のメッシュを保存できるか？

@@ -24,6 +24,37 @@ function breakUrl(url: string): [string, string] {
   return [dir, file];
 }
 
+function generateTexture(
+  engine: babylon.Engine, mesh_src: babylon.Mesh, material: babylon.Material,
+  callback: (texture: babylon.RenderTargetTexture) => void
+): babylon.RenderTargetTexture{
+  let scene = new babylon.Scene(engine);
+  scene.skipFrustumClipping = true;
+
+  let mesh = new babylon.Mesh("mesh", scene, null, mesh_src);
+  mesh.material = material;
+
+  let renderTarget = new babylon.RenderTargetTexture(
+    "procedural_texture", 1024, scene
+  );
+  renderTarget.renderList!.push(mesh);
+
+  let camera = new babylon.Camera(
+    "camera_temp", new babylon.Vector3(), scene
+  );
+  camera.outputRenderTarget = renderTarget;
+
+  let render_once = () => {
+    if (renderTarget.isReadyForRendering() && mesh.isReady(true)) {
+      renderTarget.render();
+      callback(renderTarget);
+      engine.stopRenderLoop(render_once);
+    }
+  };
+  engine.runRenderLoop(render_once);
+  return renderTarget;
+}
+
 const App: Component = () => {
 
   let canvas_model_src = document.createElement("canvas");
@@ -75,7 +106,23 @@ const App: Component = () => {
   babylon.SceneLoader.ImportMesh("",
     ...breakUrl(sampleModelUrl), scene_model,
     (meshes) => {
-      (meshes[12].material! as babylon.PBRMaterial).albedoTexture = texture_diffuse;
+      let mesh = meshes[12];
+      let material = new babylon.ShaderMaterial("shader", scene_model, {
+        vertexSource: textureVertShader,
+        fragmentSource: fbmNoiseFragShader,
+      }, {
+        attributes: ["position", "normal", "uv"],
+        uniforms: ["resolution"],
+      });
+      material.setTexture("src", (mesh.material! as babylon.PBRMaterial).albedoTexture!);
+      material.cullBackFaces = false;
+      material.depthFunction = babylon.Constants.ALWAYS;
+      generateTexture(
+        scene_model.getEngine(), mesh as babylon.Mesh, material, (texture: babylon.RenderTargetTexture)=>{
+          (mesh.material! as babylon.PBRMaterial).albedoTexture = texture;
+          console.log("texture generated");
+        }
+      );
     },
   );
 
