@@ -37,6 +37,8 @@ TypeScript + BabylonJS (+ SolidJS)
 
 TODO s
   元のテクスチャの上に描画する
+    shader側も書き換え
+  不要になったscene_workの削除
   TriplanarMapping
     Sphereか何かを置いてShaderMaterialでTriplanarMappingを付ける
     何か適当な2dテクスチャを生成する

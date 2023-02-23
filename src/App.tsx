@@ -26,10 +26,12 @@ function breakUrl(url: string): [string, string] {
 
 function generateTexture(
   engine: babylon.Engine, mesh_src: babylon.Mesh, material: babylon.Material,
-  callback: (texture: babylon.RenderTargetTexture) => void
+  callback: (texture: babylon.RenderTargetTexture) => void,
+  baseTexture?: babylon.ThinTexture
 ): babylon.RenderTargetTexture{
   let scene = new babylon.Scene(engine);
   scene.skipFrustumClipping = true;
+  // scene.autoClear = false;
 
   let mesh = new babylon.Mesh("mesh", scene, null, mesh_src);
   mesh.material = material;
@@ -37,6 +39,7 @@ function generateTexture(
   let renderTarget = new babylon.RenderTargetTexture(
     "procedural_texture", 1024, scene
   );
+  renderTarget.skipInitialClear = true;
   renderTarget.renderList!.push(mesh);
 
   let camera = new babylon.Camera(
@@ -44,8 +47,13 @@ function generateTexture(
   );
   camera.outputRenderTarget = renderTarget;
 
+  let copier = new babylon.CopyTextureToTexture(engine, false);
+
   let render_once = () => {
-    if (renderTarget.isReadyForRendering() && mesh.isReady(true)) {
+    if (renderTarget.isReadyForRendering() && mesh.isReady(true) && copier.isReady()) {
+      if (baseTexture != null) {
+        copier.copy(baseTexture!, renderTarget);
+      }
       renderTarget.render();
       callback(renderTarget);
       engine.stopRenderLoop(render_once);
@@ -107,21 +115,25 @@ const App: Component = () => {
     ...breakUrl(sampleModelUrl), scene_model,
     (meshes) => {
       let mesh = meshes[12];
+      let baseTexture = (mesh.material! as babylon.PBRMaterial).albedoTexture!;
       let material = new babylon.ShaderMaterial("shader", scene_model, {
         vertexSource: textureVertShader,
-        fragmentSource: fbmNoiseFragShader,
+        fragmentSource: voronoiTiledFragShader,
       }, {
         attributes: ["position", "normal", "uv"],
         uniforms: ["resolution"],
       });
-      material.setTexture("src", (mesh.material! as babylon.PBRMaterial).albedoTexture!);
+      material.setTexture("src", baseTexture);
       material.cullBackFaces = false;
       material.depthFunction = babylon.Constants.ALWAYS;
+      let preview_plane = babylon.MeshBuilder.CreatePlane("plane", {}, scene_model);
+      preview_plane.material = new babylon.StandardMaterial("preview", scene_model);
       generateTexture(
         scene_model.getEngine(), mesh as babylon.Mesh, material, (texture: babylon.RenderTargetTexture)=>{
           (mesh.material! as babylon.PBRMaterial).albedoTexture = texture;
-          console.log("texture generated");
-        }
+          (preview_plane.material! as babylon.StandardMaterial).ambientTexture = texture;
+        },
+        baseTexture
       );
     },
   );

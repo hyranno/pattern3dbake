@@ -13,5 +13,9 @@ in vec2 vUV;
 out vec4 fragColor;
 
 void main() {
-  fragColor = vec4(vec3(0.5) + 30.0*vec3(simplex_noise3d(vPosition * 20.0)), 1.0);
+  vec4 baseColor = texture(src, vUV);
+  fragColor = vec4(
+    0.5 * baseColor.xyz + 4.0 * vec3(simplex_noise3d(vPosition * 20.0)),
+    baseColor.w
+  );
 }
