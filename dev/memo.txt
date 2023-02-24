@@ -23,12 +23,18 @@ Triplanar Mapping
   テクスチャから転写する
   レンダリング時にやや負荷
     テクスチャ参照が複数回(3)発生する
-    座標変換、blend
   同じテクスチャを参照して使いまわせる
-  blendしてる部分がボケたり、面の角度によって品質が下がる
-  大量に置く岩など
-    個別のテクスチャをメモリに持たせるほど重要ではない
-    レンダリング時計算では重すぎる
+  やや不自然にはなる
+    blendしてる部分がボケるので、面の角度によって品質が下がる
+    裏表で同じ結果になる
+  使いどころ
+    質感表現のための高周波ノイズ
+      やや不自然な部分があっても画面上で小さいのでバレにくい
+    大量に置く岩など
+      個別のテクスチャをメモリに持たせるほど重要ではない
+      レンダリング時計算では重すぎる
+    大型のオブジェクト
+      テクスチャを十分な解像度で持つのが難しい
   解像度を維持するためにテクスチャを繰り返し配置する
     hex-tiling等を用いると気付かれにくい
 
@@ -36,17 +42,15 @@ TypeScript + BabylonJS (+ SolidJS)
 
 
 TODO s
-  元のテクスチャの上に描画する
-    shader側も書き換え
-  不要になったscene_workの削除
   TriplanarMapping
     Sphereか何かを置いてShaderMaterialでTriplanarMappingを付ける
     何か適当な2dテクスチャを生成する
   HexTiled TriplanarMapping
+  Procedural Textures
+    gravel
+    moss
+  demo兼readmeにする
   より具体的なマテリアル
-
-canvasがアルファ値を保存してないのでは
-  textureに直にレンダリングする必要がある?
 
 
 simplex
@@ -69,21 +73,15 @@ vite-plugin-glsl でシェーダを管理する
   voronoi(fill, edge)
   GradientNoise(Perlin, Simplex, OpenSimplex)
 
-canvas_diffuse, canvas_bump, ...
-canvas_view
-  material.diffuseTexture, .bumpTexture, ... に DynamicTexture 割り当て
-
 メッシュをvertexシェーダでUVに展開
   頂点のUV情報に従う(メッシュを実行時生成する場合、UVも生成する)
 faceをテクスチャ(color, bump, etc...)に描画していく
   描画位置はUVに依存
   色は3Dモデル上の座標に依存
   法線も欲しい
-material.diffuseTexture, .bumpTexture に texture 割り当て
-  canvas経由のDynamicTextureじゃないとengine用canvasのサイズに制限される?
+material.diffuseTexture, .bumpTexture, ... に texture 割り当て
 
 canvasでなくテクスチャに描画する?
-  camera.customRenderTarget
   camera.renderTargetTexture
 前段のテクスチャを参照はしない
   加算・乗算など
@@ -91,11 +89,6 @@ canvasでなくテクスチャに描画する?
 元のテクスチャの上から描画
   CopyTextureToTexture
   clearしないで描画
-    scene.autoClear = false;
-  /*
-  mesh_copy.renderingGroupId = 0
-  mesh_noise.renderingGroupId = 1
-  */
 特定のカメラにのみ描画
   layer masks
 

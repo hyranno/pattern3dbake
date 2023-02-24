@@ -6,7 +6,9 @@ import * as babylon from "babylonjs";
 import 'babylonjs-loaders';
 // import "babylon-vrm-loader";  // outdated?
 
+import plainVertShader from 'shaders/plain.glsl.vert';
 import textureVertShader from 'shaders/texture.glsl.vert';
+
 import plainFragShader from 'shaders/plain.glsl.frag';
 import copyFragShader from 'shaders/copy.glsl.frag';
 import voronoiFragShader from 'shaders/voronoi.glsl.frag';
@@ -14,6 +16,11 @@ import voronoiTiledFragShader from 'shaders/voronoi_tiled.glsl.frag';
 import valueNoiseFragShader from 'shaders/value_noise.glsl.frag';
 import simplexNoiseFragShader from 'shaders/simplex_noise.glsl.frag';
 import fbmNoiseFragShader from 'shaders/fbm_noise.glsl.frag';
+
+import uvProjectionFragShader from 'shaders/projection_textures/uv.glsl.frag';
+
+import triplanarFragShader from 'shaders/triplanar.glsl.frag';
+
 
 import sampleModelUrl from '../assets/sample.glb?url';
 
@@ -125,6 +132,40 @@ const App: Component = () => {
   );
 
 
+  let canvas_triplanar = document.createElement("canvas");
+  canvas_triplanar.width = 768;
+  canvas_triplanar.height = 542;
+  let scene_triplanar = ((canvas: ConstructorParameters<typeof babylon.Engine>[0]) => {
+    let engine = new babylon.Engine(canvas, true);
+    let scene = new babylon.Scene(engine);
+    scene.createDefaultCameraOrLight(true, true, true);
+    scene.createDefaultEnvironment();
+    let mesh = babylon.MeshBuilder.CreateSphere("sphere", {}, scene);
+
+    babylon.Effect.ShadersStore["uvPixelShader"] = `${uvProjectionFragShader}`;
+    let texture = new babylon.CustomProceduralTexture("uvTexture", "uv", 256, scene);
+    texture.onGeneratedObservable.add(() => {
+      let material = new babylon.ShaderMaterial("shader", scene, {
+        vertexSource: plainVertShader,
+        fragmentSource: triplanarFragShader,
+      }, {
+        attributes: ["position", "normal", "uv"],
+        uniforms: ["resolution", "worldViewProjection"],
+      });
+      material.setTexture("src", texture);
+      material.setTexture("plane_x", texture);
+      material.setTexture("plane_y", texture);
+      material.setTexture("plane_z", texture);
+      mesh.material = material;
+    });
+
+    engine.runRenderLoop(() => {
+      scene.render();
+    });
+    return scene;
+  })(canvas_triplanar);
+
+
   return (
     <div class={styles.App}>
       <div>
@@ -132,6 +173,9 @@ const App: Component = () => {
       </div>
       <div>
         {canvas_model}
+      </div>
+      <div>
+        {canvas_triplanar}
       </div>
     </div>
   );
