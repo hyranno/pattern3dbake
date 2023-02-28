@@ -36,3 +36,13 @@ vec3 calc_normal(vec3[3] face) {
 float distance_from_plane(vec3 p, vec3[3] face) {
   return abs(dot(p-face[0], calc_normal(face)));
 }
+float distance_from_line(vec3 p, vec3[2] line) {
+  return length(cross(p-line[0], normalize(line[1]-line[0])));
+}
+float distance_from_line(vec2 p, vec2[2] line) {
+  return distance_from_line(vec3(p, 0.0), vec3[](vec3(line[0], 0.0), vec3(line[1], 0.0)));
+}
+
+vec2 rotate(vec2 p, float rad) {
+  return mat2(cos(rad), sin(rad), -sin(rad), cos(rad)) * p;
+}

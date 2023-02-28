@@ -42,14 +42,14 @@ TypeScript + BabylonJS (+ SolidJS)
 
 
 TODO s
-  TriplanarMapping
-    Sphereか何かを置いてShaderMaterialでTriplanarMappingを付ける
-    何か適当な2dテクスチャを生成する
-  HexTiled TriplanarMapping
   Procedural Textures
     gravel
     moss
   demo兼readmeにする
+  リファクタリング
+    randを整える
+      salt不要
+      命名規則と引数,戻り値の一貫性
   より具体的なマテリアル
 
 

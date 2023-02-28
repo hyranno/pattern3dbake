@@ -20,6 +20,7 @@ import fbmNoiseFragShader from 'shaders/fbm_noise.glsl.frag';
 import uvProjectionFragShader from 'shaders/projection_textures/uv.glsl.frag';
 
 import triplanarFragShader from 'shaders/triplanar.glsl.frag';
+import triplanarHexFragShader from 'shaders/triplanar_hex.glsl.frag';
 
 
 import sampleModelUrl from '../assets/sample.glb?url';
@@ -147,7 +148,7 @@ const App: Component = () => {
     texture.onGeneratedObservable.add(() => {
       let material = new babylon.ShaderMaterial("shader", scene, {
         vertexSource: plainVertShader,
-        fragmentSource: triplanarFragShader,
+        fragmentSource: triplanarHexFragShader,
       }, {
         attributes: ["position", "normal", "uv"],
         uniforms: ["resolution", "worldViewProjection"],
