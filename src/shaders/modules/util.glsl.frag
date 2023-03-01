@@ -46,3 +46,19 @@ float distance_from_line(vec2 p, vec2[2] line) {
 vec2 rotate(vec2 p, float rad) {
   return mat2(cos(rad), sin(rad), -sin(rad), cos(rad)) * p;
 }
+
+vec4 to_ratio(vec4 weight) {
+  return weight / (weight.x + weight.y + weight.z + weight.w);
+}
+vec3 to_ratio(vec3 weight) {
+  return to_ratio(vec4(weight, 0.0)).xyz;
+}
+
+float smoothmin(float v0, float v1, float smoothness) {
+  float h = max( smoothness - abs(v1-v0), 0.0 ) / smoothness;
+  return min(v0, v1) - smoothness *h*h*h*(1.0/6.0);
+}
+float smoothmax(float v0, float v1, float smoothness) {
+  float h = max( smoothness - abs(v1-v0), 0.0 ) / smoothness;
+  return max(v0, v1) + smoothness *h*h*h*(1.0/6.0);
+}

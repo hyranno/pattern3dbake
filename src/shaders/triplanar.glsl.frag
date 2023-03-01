@@ -30,7 +30,7 @@ void main() {
   for (int i=0; i<3; i++) {
     weight[i] = pow(weight[i], sharpness);
   }
-  weight = normalize(weight);
+  weight = to_ratio(weight);
 
   vec4 projectedColor = color * weight;
 

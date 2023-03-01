@@ -18,6 +18,7 @@ import simplexNoiseFragShader from 'shaders/simplex_noise.glsl.frag';
 import fbmNoiseFragShader from 'shaders/fbm_noise.glsl.frag';
 
 import uvProjectionFragShader from 'shaders/projection_textures/uv.glsl.frag';
+import gravelProjectionFragShader from 'shaders/projection_textures/gravel.glsl.frag';
 
 import triplanarFragShader from 'shaders/triplanar.glsl.frag';
 import triplanarHexFragShader from 'shaders/triplanar_hex.glsl.frag';
@@ -143,21 +144,25 @@ const App: Component = () => {
     scene.createDefaultEnvironment();
     let mesh = babylon.MeshBuilder.CreateSphere("sphere", {}, scene);
 
-    babylon.Effect.ShadersStore["uvPixelShader"] = `${uvProjectionFragShader}`;
-    let texture = new babylon.CustomProceduralTexture("uvTexture", "uv", 256, scene);
+    // babylon.Effect.ShadersStore["uvPixelShader"] = `${uvProjectionFragShader}`;
+    // let texture = new babylon.CustomProceduralTexture("uvTexture", "uv", 256, scene);
+    babylon.Effect.ShadersStore["gravelPixelShader"] = `${gravelProjectionFragShader}`;
+    let texture = new babylon.CustomProceduralTexture("gravelTexture", "gravel", 512, scene);
+    let material = new babylon.ShaderMaterial("shader", scene, {
+      vertexSource: plainVertShader,
+      fragmentSource: triplanarHexFragShader,
+    }, {
+      attributes: ["position", "normal", "uv"],
+      uniforms: ["resolution", "worldViewProjection"],
+    });
+    material.setTexture("src", texture);
+    material.setTexture("plane_x", texture);
+    material.setTexture("plane_y", texture);
+    material.setTexture("plane_z", texture);
     texture.onGeneratedObservable.add(() => {
-      let material = new babylon.ShaderMaterial("shader", scene, {
-        vertexSource: plainVertShader,
-        fragmentSource: triplanarHexFragShader,
-      }, {
-        attributes: ["position", "normal", "uv"],
-        uniforms: ["resolution", "worldViewProjection"],
-      });
-      material.setTexture("src", texture);
-      material.setTexture("plane_x", texture);
-      material.setTexture("plane_y", texture);
-      material.setTexture("plane_z", texture);
-      mesh.material = material;
+      if (material.isReady()) {
+        mesh.material = material;
+      }
     });
 
     engine.runRenderLoop(() => {

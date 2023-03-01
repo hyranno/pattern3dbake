@@ -52,7 +52,7 @@ vec4 tiled_texture(in sampler2D samp, vec2 point, float randomness, float sharpn
   for (int i=0; i<3; i++) {
     weight[i] = pow(weight[i], sharpness);
   }
-  weight = normalize(weight);
+  weight = to_ratio(weight);
 
   mat3x4 color = mat3x4(
     texture(samp, uvs[0]),
@@ -83,7 +83,7 @@ void main() {
   for (int i=0; i<3; i++) {
     weight[i] = pow(weight[i], sharpness);
   }
-  weight = normalize(weight);
+  weight = to_ratio(weight);
 
   vec4 projectedColor = color * weight;
 

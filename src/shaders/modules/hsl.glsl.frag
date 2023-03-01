@@ -1,4 +1,4 @@
-#include 'util.glsl.frag';
+// #pragma glslify: import('./util.glsl.frag')
 
 vec3 hsl_from_rgb(vec3 rgb) {
   const float pi = radians(180.0);
