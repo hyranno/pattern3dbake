@@ -19,6 +19,7 @@ import fbmNoiseFragShader from 'shaders/fbm_noise.glsl.frag';
 
 import uvProjectionFragShader from 'shaders/projection_textures/uv.glsl.frag';
 import gravelProjectionFragShader from 'shaders/projection_textures/gravel.glsl.frag';
+import mossProjectionFragShader from 'shaders/projection_textures/moss.glsl.frag';
 
 import triplanarFragShader from 'shaders/triplanar.glsl.frag';
 import triplanarHexFragShader from 'shaders/triplanar_hex.glsl.frag';
@@ -144,10 +145,12 @@ const App: Component = () => {
     scene.createDefaultEnvironment();
     let mesh = babylon.MeshBuilder.CreateSphere("sphere", {}, scene);
 
-    // babylon.Effect.ShadersStore["uvPixelShader"] = `${uvProjectionFragShader}`;
-    // let texture = new babylon.CustomProceduralTexture("uvTexture", "uv", 256, scene);
+    babylon.Effect.ShadersStore["uvPixelShader"] = `${uvProjectionFragShader}`;
+    let texture = new babylon.CustomProceduralTexture("uvTexture", "uv", 256, scene);
     babylon.Effect.ShadersStore["gravelPixelShader"] = `${gravelProjectionFragShader}`;
-    let texture = new babylon.CustomProceduralTexture("gravelTexture", "gravel", 512, scene);
+    let gravel_texture = new babylon.CustomProceduralTexture("gravelTexture", "gravel", 512, scene);
+    babylon.Effect.ShadersStore["mossPixelShader"] = `${mossProjectionFragShader}`;
+    let moss_texture = new babylon.CustomProceduralTexture("mossTexture", "moss", 512, scene);
     let material = new babylon.ShaderMaterial("shader", scene, {
       vertexSource: plainVertShader,
       fragmentSource: triplanarHexFragShader,
@@ -156,10 +159,20 @@ const App: Component = () => {
       uniforms: ["resolution", "worldViewProjection"],
     });
     material.setTexture("src", texture);
-    material.setTexture("plane_x", texture);
-    material.setTexture("plane_y", texture);
-    material.setTexture("plane_z", texture);
+    material.setTexture("plane_x", gravel_texture);
+    material.setTexture("plane_y", moss_texture);
+    material.setTexture("plane_z", gravel_texture);
     texture.onGeneratedObservable.add(() => {
+      if (material.isReady()) {
+        mesh.material = material;
+      }
+    });
+    gravel_texture.onGeneratedObservable.add(() => {
+      if (material.isReady()) {
+        mesh.material = material;
+      }
+    });
+    moss_texture.onGeneratedObservable.add(() => {
       if (material.isReady()) {
         mesh.material = material;
       }

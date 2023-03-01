@@ -26,9 +26,10 @@ Triplanar Mapping
     テクスチャ参照が複数回発生する
   同じテクスチャを参照して使いまわせる
   やや不自然にはなる
-    blendしてる部分がボケるので、面の角度によって品質が下がる
+    面の角度によって品質が下がる
+      blendしてる部分がボケる
+      引き延ばされて歪む
     タイル境界もボケるなどする
-    裏表で同じ結果になる
   使いどころ
     質感表現のための高周波ノイズ
       やや不自然な部分があっても画面上で小さいのでバレにくい
@@ -44,12 +45,10 @@ TypeScript + BabylonJS (+ SolidJS)
 
 
 TODO s
-  Procedural Textures
-    gravel
-    moss
   demo兼readmeにする
   リファクタリング
     使い終わったsceneのdispose
+    シェーダにinclude guardつける
     randを整える
       salt不要
       命名規則と引数,戻り値の一貫性
@@ -70,6 +69,7 @@ voronoi-based hex-tiling
 
 vite-plugin-glsl でシェーダを管理する
   https://github.com/UstymUkhman/vite-plugin-glsl
+  include guard を付ける必要がありそう
 生成する要素
   サルベージする
     https://github.com/hyranno/raymarch_webgl/tree/master/src/tsgl_raymarch

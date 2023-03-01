@@ -32,7 +32,7 @@ float value_noise3d(vec3 point) {
     rand_normal(corners[2]),
     rand_normal(corners[3])
   );
-  weight = normalize(weight);
+  weight = to_ratio(weight);
   return dot(noise, weight);
 }
 
