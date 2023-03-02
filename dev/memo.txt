@@ -48,7 +48,6 @@ TODO s
   demo兼readmeにする
     gistでコード埋め込み?
   リファクタリング
-    canvas類を別ファイルに分離
     使い終わったsceneのdispose
     シェーダにinclude guardつける
     randを整える

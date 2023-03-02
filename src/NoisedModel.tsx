@@ -18,14 +18,15 @@ import fbmNoiseFragShader from 'shaders/fbm_noise.glsl.frag';
 
 
 function generateTexture(
-  engine: babylon.Engine, mesh_src: babylon.Mesh, material: babylon.Material,
+  scene: babylon.Scene, mesh_src: babylon.Mesh, material: babylon.Material,
   callback: (texture: babylon.RenderTargetTexture) => void,
   baseTexture?: babylon.ThinTexture
 ): babylon.RenderTargetTexture{
-  let scene = new babylon.Scene(engine);
-  scene.skipFrustumClipping = true;
+  let engine = scene.getEngine();
+  let scene_work = new babylon.Scene(engine);
+  scene_work.skipFrustumClipping = true;
 
-  let mesh = new babylon.Mesh("mesh", scene, null, mesh_src);
+  let mesh = new babylon.Mesh("mesh", scene_work, null, mesh_src);
   mesh.material = material;
 
   let renderTarget = new babylon.RenderTargetTexture(
@@ -35,7 +36,7 @@ function generateTexture(
   renderTarget.renderList!.push(mesh);
 
   let camera = new babylon.Camera(
-    "camera_temp", new babylon.Vector3(), scene
+    "camera_temp", new babylon.Vector3(), scene_work
   );
   camera.outputRenderTarget = renderTarget;
 
@@ -49,6 +50,7 @@ function generateTexture(
       renderTarget.render();
       callback(renderTarget);
       engine.stopRenderLoop(render_once);
+      scene_work.dispose();
     }
   };
   engine.runRenderLoop(render_once);
@@ -88,7 +90,7 @@ const NoisedModel: Component = () => {
       let preview_plane = babylon.MeshBuilder.CreatePlane("plane", {}, scene);
       preview_plane.material = new babylon.StandardMaterial("preview", scene);
       generateTexture(
-        scene.getEngine(), mesh as babylon.Mesh, material, (texture: babylon.RenderTargetTexture)=>{
+        scene, mesh as babylon.Mesh, material, (texture: babylon.RenderTargetTexture)=>{
           (mesh.material! as babylon.PBRMaterial).albedoTexture = texture;
           (preview_plane.material! as babylon.StandardMaterial).ambientTexture = texture;
         },
