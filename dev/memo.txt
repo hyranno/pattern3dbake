@@ -46,12 +46,17 @@ TypeScript + BabylonJS (+ SolidJS)
 
 TODO s
   demo兼readmeにする
+    gistでコード埋め込み?
   リファクタリング
+    canvas類を別ファイルに分離
     使い終わったsceneのdispose
     シェーダにinclude guardつける
     randを整える
       salt不要
       命名規則と引数,戻り値の一貫性
+  TiledTexture
+    小さなテクスチャをタイル状に配置して大きなテクスチャに見せる
+    投影ではなく元のテクスチャに重ねる
   より具体的なマテリアル
 
 
