@@ -1,4 +1,7 @@
-// #pragma glslify: import('./util.glsl.frag')
+#ifndef INCLUDED_HSL
+#define INCLUDED_HSL
+
+#pragma glslify: import('./util.glsl.frag')
 
 vec3 hsl_from_rgb(vec3 rgb) {
   const float pi = radians(180.0);
@@ -27,3 +30,5 @@ vec3 rgb_from_hsl(vec3 hsl) {
   float cmin = hsl.z - hsl.y / 2.0 * (1.0 - abs(2.0 * hsl.z - 1.0));
   return mix(vec3(cmin), vec3(cmax), ratio);
 }
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef INCLUDED_UTIL
+#define INCLUDED_UTIL
+
 float balance_radian(float rad) {
   const float pi = radians(180.0);
   return mod(rad + pi, 2.0*pi) - pi;
@@ -62,3 +65,5 @@ float smoothmax(float v0, float v1, float smoothness) {
   float h = max( smoothness - abs(v1-v0), 0.0 ) / smoothness;
   return max(v0, v1) + smoothness *h*h*h*(1.0/6.0);
 }
+
+#endif

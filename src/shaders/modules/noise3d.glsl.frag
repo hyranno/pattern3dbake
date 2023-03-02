@@ -1,3 +1,6 @@
+#ifndef INCLUDED_NOISE3D
+#define INCLUDED_NOISE3D
+
 #pragma glslify: import('./util.glsl.frag')
 #pragma glslify: import('./random.glsl.frag')
 #pragma glslify: import('./simplex3.glsl.frag')
@@ -88,3 +91,5 @@ float fractional_brownian_motion(vec3 point, int depth, float decay) {
   }
   return result;
 }
+
+#endif

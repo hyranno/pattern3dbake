@@ -1,3 +1,5 @@
+#ifndef INCLUDED_SIMPLEX2D
+#define INCLUDED_SIMPLEX2D
 
 const mat2 simplex2_coord_basis = mat2(1.0) + (sqrt(3.0)-1.0)/2.0;
 const mat2 simplex2_coord_inverse = inverse(simplex2_coord_basis);
@@ -42,3 +44,5 @@ vec3 calc_corner_closeness(vec2 point, vec2[3] corners) {
     distance_from_line(point, edge2) / distance_from_line(corners[2], edge2)
   );
 }
+
+#endif

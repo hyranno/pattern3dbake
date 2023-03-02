@@ -1,3 +1,6 @@
+#ifndef INCLUDED_VORONOI
+#define INCLUDED_VORONOI
+
 #pragma glslify: import('./util.glsl.frag')
 #pragma glslify: import('./random.glsl.frag')
 #pragma glslify: import('./simplex3.glsl.frag')
@@ -38,3 +41,5 @@ float voronoi_tiled_random(vec3 point) {
   weight[int(nearest)] = 1.0;
   return dot(noise, weight);
 }
+
+#endif

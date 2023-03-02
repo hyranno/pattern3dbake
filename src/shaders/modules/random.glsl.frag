@@ -1,3 +1,5 @@
+#ifndef INCLUDED_RAND
+#define INCLUDED_RAND
 
 float rand_uniform(float v, float salt) {
   float phase = 321.47 * salt + mod(v * 596.459, 951.54);
@@ -32,3 +34,5 @@ vec3 rand_normal_vec3(vec3 p) {
 float rand_exponential (float v, float salt) { // inversion method
   return -log(1.0 - rand_uniform(v, salt));
 }
+
+#endif

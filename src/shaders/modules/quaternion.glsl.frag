@@ -1,3 +1,6 @@
+#ifndef INCLUDED_QUAT
+#define INCLUDED_QUAT
+
 vec4 quaternion_fromAngleAxis(float angle, vec3 axis) {
   float x = axis.x*sin(angle/2.0);
   float y = axis.y*sin(angle/2.0);
@@ -53,3 +56,5 @@ mat3 dcm_from_axis_xz(vec3 x, vec3 z) {
   vec3 y = -cross(x,z);
   return mat3(normalize(x),normalize(y),normalize(z));
 }
+
+#endif

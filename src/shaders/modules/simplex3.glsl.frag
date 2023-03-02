@@ -1,3 +1,5 @@
+#ifndef INCLUDED_SIMPLEX3D
+#define INCLUDED_SIMPLEX3D
 
 const mat3 simplex3_coord_basis = mat3(1.0) + 1.0/3.0;
 const mat3 simplex3_coord_inverse = inverse(simplex3_coord_basis);
@@ -48,3 +50,5 @@ vec4 calc_corner_closeness(vec3 point, vec3[4] corners) {
     distance_from_plane(point, face3) / distance_from_plane(corners[3], face3)
   );
 }
+
+#endif
