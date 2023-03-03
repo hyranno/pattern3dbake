@@ -46,10 +46,8 @@ TypeScript + BabylonJS (+ SolidJS)
 
 TODO s
   demo兼readmeにする
+    glTFファイルでやる意味特にないか
     gistでコード埋め込み?
-  TiledTexture
-    小さなテクスチャをタイル状に配置して大きなテクスチャに見せる
-    投影ではなく元のテクスチャに重ねる
   より具体的なマテリアル
 
 

@@ -4,6 +4,7 @@ import styles from './App.module.css';
 
 import PlainModel from 'PlainModel';
 import NoisedModel from 'NoisedModel';
+import TiledAdd from 'TiledAdd';
 import Triplanar from 'Triplanar';
 
 const App: Component = () => {
@@ -75,6 +76,7 @@ const App: Component = () => {
         タイル形状を六角形に変更したり、ランダムに回転させたりすると軽減できる。
       </p>
       <div>
+        <TiledAdd />
       </div>
 
       <h4>Triplanar Mapping による投影</h4>
