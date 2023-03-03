@@ -7,14 +7,9 @@ import * as util from 'util';
 
 import sampleModelUrl from '../assets/sample.glb?url';
 
-import textureVertShader from 'shaders/texture.glsl.vert';
-import plainFragShader from 'shaders/plain.glsl.frag';
-import uvFragShader from 'shaders/uv.glsl.frag';
-import voronoiFragShader from 'shaders/voronoi.glsl.frag';
-import voronoiTiledFragShader from 'shaders/voronoi_tiled.glsl.frag';
-import valueNoiseFragShader from 'shaders/value_noise.glsl.frag';
-import simplexNoiseFragShader from 'shaders/simplex_noise.glsl.frag';
-import fbmNoiseFragShader from 'shaders/fbm_noise.glsl.frag';
+import uvProjectionFragShader from 'shaders/uv.glsl.frag';
+import textureVertShader from 'shaders/pattern3d/texture.glsl.vert';
+import noiseFragShader from 'shaders/pattern3d/fbm_noise.glsl.frag';
 
 
 function generateTexture(
@@ -58,11 +53,11 @@ function generateTexture(
 }
 
 
-const NoisedModel: Component = () => {
+const PatternBaked: Component = () => {
 
   let canvas = document.createElement("canvas");
-  canvas.width = 768;
-  canvas.height = 512;
+  canvas.width = 512;
+  canvas.height = 384;
 
   let engine = new babylon.Engine(canvas, false);
   let scene = new babylon.Scene(engine);
@@ -72,31 +67,29 @@ const NoisedModel: Component = () => {
     scene.render();
   });
 
-  babylon.SceneLoader.ImportMesh("",
-    ...util.breakUrl(sampleModelUrl), scene,
-    (meshes) => {
-      let mesh = meshes[12];
-      let baseTexture = (mesh.material! as babylon.PBRMaterial).albedoTexture!;
-      let material = new babylon.ShaderMaterial("shader", scene, {
-        vertexSource: textureVertShader,
-        fragmentSource: simplexNoiseFragShader,
-      }, {
-        attributes: ["position", "normal", "uv"],
-        uniforms: ["resolution"],
-      });
-      material.setTexture("src", baseTexture);
-      material.cullBackFaces = false;
-      material.depthFunction = babylon.Constants.ALWAYS;
-      let preview_plane = babylon.MeshBuilder.CreatePlane("plane", {}, scene);
-      preview_plane.material = new babylon.StandardMaterial("preview", scene);
-      generateTexture(
-        scene, mesh as babylon.Mesh, material, (texture: babylon.RenderTargetTexture)=>{
-          (mesh.material! as babylon.PBRMaterial).albedoTexture = texture;
-          (preview_plane.material! as babylon.StandardMaterial).ambientTexture = texture;
-        },
-        baseTexture
-      );
+  let mesh = babylon.MeshBuilder.CreateSphere("sphere", {}, scene);
+  mesh.material = new babylon.StandardMaterial("standard");
+  // let preview_plane = babylon.MeshBuilder.CreatePlane("plane", {}, scene);
+  // preview_plane.material = new babylon.StandardMaterial("preview", scene);
+
+  babylon.Effect.ShadersStore["uvPixelShader"] = `${uvProjectionFragShader}`;
+  let baseTexture = new babylon.CustomProceduralTexture("uvTexture", "uv", 256, scene);
+  // let baseTexture = (mesh.material! as babylon.StandardMaterial).ambientTexture!;
+  let material = new babylon.ShaderMaterial("shader", scene, {
+    vertexSource: textureVertShader,
+    fragmentSource: noiseFragShader,
+  }, {
+    attributes: ["position", "normal", "uv"],
+    uniforms: ["resolution"],
+  });
+  material.setTexture("src", baseTexture);
+  material.depthFunction = babylon.Constants.ALWAYS;
+  generateTexture(
+    scene, mesh as babylon.Mesh, material, (texture: babylon.RenderTargetTexture)=>{
+      (mesh.material! as babylon.StandardMaterial).ambientTexture = texture;
+      // (preview_plane.material! as babylon.StandardMaterial).ambientTexture = texture;
     },
+    baseTexture
   );
 
   return <>
@@ -104,4 +97,4 @@ const NoisedModel: Component = () => {
   </>;
 };
 
-export default NoisedModel;
+export default PatternBaked;

@@ -1,7 +1,7 @@
 #version 300 es
 precision highp float;
 
-#pragma glslify: import('./modules/voronoi.glsl.frag')
+#pragma glslify: import('../modules/voronoi.glsl.frag')
 
 uniform vec2 resolution;
 uniform sampler2D src;

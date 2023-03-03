@@ -3,7 +3,7 @@ import type { Component } from 'solid-js';
 import styles from './App.module.css';
 
 import PlainModel from 'PlainModel';
-import NoisedModel from 'NoisedModel';
+import PatternBaked from 'PatternBaked';
 import TiledAdd from 'TiledAdd';
 import Triplanar from 'Triplanar';
 
@@ -59,7 +59,7 @@ const App: Component = () => {
         <PlainModel />
       </div>
       <div>
-        <NoisedModel />
+        <PatternBaked />
       </div>
       <p>
         3次元パターンを元にしているのでUVの切れ目でも模様が連続する。

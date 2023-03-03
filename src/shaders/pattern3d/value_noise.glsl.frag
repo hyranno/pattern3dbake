@@ -1,7 +1,7 @@
 #version 300 es
 precision highp float;
 
-#pragma glslify: import('./modules/noise3d.glsl.frag')
+#pragma glslify: import('../modules/noise3d.glsl.frag')
 
 uniform vec2 resolution;
 uniform sampler2D src;

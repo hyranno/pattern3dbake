@@ -27,10 +27,10 @@ float rand_uniform(float v) {
   return fract(961.48 * cos(phase));
 }
 float rand_uniform(vec2 v) {
-  return rand_uniform(dot(v, vec2(89.3, 10.9)));
+  return rand_uniform(dot(v, vec2(0.893, 1.09)));
 }
 float rand_uniform(vec3 v) {
-  return rand_uniform(dot(v, vec3(89.3, 10.9, 46.49)));
+  return rand_uniform(dot(v, vec3(0.893, 1.09, 4.649)));
 }
 vec2 rand_uniform_vec2(vec2 v) {
   vec2 r = vec2(
@@ -57,13 +57,13 @@ vec2 box_mullar(vec2 r) {
   return  amp * vec2(cos(phase), sin(phase));
 }
 float rand_normal(float v) {
-  return rand_normal_vec2(vec2(v, 728.2)).x;
+  return rand_normal_vec2(vec2(v, rand_uniform(v))).x;
 }
 float rand_normal(vec2 v) {
-  return rand_normal(dot(v, vec2(22.4, 35.4)));
+  return rand_normal_vec2(v).x;
 }
 float rand_normal(vec3 v) {
-  return rand_normal(dot(v, vec3(77.4, 96.0, 89.3)));
+  return rand_normal(dot(v, vec3(0.774, 0.960, 0.893)));
 }
 vec2 rand_normal_vec2(vec2 v) {
   return box_mullar(rand_uniform_vec2(v));
