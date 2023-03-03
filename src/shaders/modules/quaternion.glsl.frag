@@ -35,7 +35,7 @@ vec4 dcm_to_quaternion(mat3 dcm) {
   );
   int imax = 0;
   for (int i=1; i<4; i++) {
-    imax = select(imax, i, a4v[imax] < a4v[i]);
+    imax = int(mix(float(imax), float(i), a4v[imax] < a4v[i]));
   }
   mat4 vs = transpose(mat4(
     0.0, dcm[0][1]+dcm[1][0], dcm[2][0]+dcm[0][2], dcm[1][2]-dcm[2][1],
@@ -44,7 +44,7 @@ vec4 dcm_to_quaternion(mat3 dcm) {
     dcm[1][2]-dcm[2][1], dcm[2][0]-dcm[0][2], dcm[0][1]-dcm[1][0], 0.0
   ));
   for (int i=0; i<4; i++) {
-    res[i] = select(vs[imax][i]/a4v[imax], a4v[imax]/4.0, i==imax);
+    res[i] = mix(vs[imax][i]/a4v[imax], a4v[imax]/4.0, i==imax);
   }
   return res;
 }

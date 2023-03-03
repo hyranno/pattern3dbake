@@ -15,7 +15,7 @@ out vec4 fragColor;
 void main() {
   vec4 baseColor = texture(src, vUV);
   fragColor = vec4(
-    0.5 * baseColor.xyz + 1.0 * vec3(
+    baseColor.xyz + 1.0 * vec3(
       fractional_brownian_motion(vPosition * 20.0, 4, 0.5)
     ),
     baseColor.w

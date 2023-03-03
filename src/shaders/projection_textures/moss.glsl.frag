@@ -2,16 +2,13 @@
 precision highp float;
 
 #pragma glslify: import('../modules/noise2d.glsl.frag')
-// #pragma glslify: import('../modules/util.glsl.frag')
-// #pragma glslify: import('../modules/random.glsl.frag')
-// #pragma glslify: import('../modules/simplex2.glsl.frag')
 
 in vec2 vUV;
 
 out vec4 fragColor;
 
 void main() {
-  float scale = 20.0;
+  float scale = 10.0;
   vec3 base_color = vec3(0.08, 0.20, 0.08);
   vec3 top_color = vec3(0.60, 0.80, 0.20);
 

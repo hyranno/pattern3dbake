@@ -1,12 +1,54 @@
 #ifndef INCLUDED_RAND
 #define INCLUDED_RAND
 
-float rand_uniform(float v, float salt) {
-  float phase = 321.47 * salt + mod(v * 596.459, 951.54);
-  return fract(4643.4649 * cos(phase));
+#pragma glslify: import('./util.glsl.frag')
+#pragma glslify: import('./quaternion.glsl.frag')
+
+/* prototypes */
+float rand_uniform(float v);
+float rand_uniform(vec2 v);
+float rand_uniform(vec3 v);
+vec2 rand_uniform_vec2(vec2 v);
+vec3 rand_uniform_vec3(vec3 v);
+
+vec2 box_mullar(vec2 r);
+float rand_normal(float v);
+float rand_normal(vec2 v);
+float rand_normal(vec3 v);
+vec2 rand_normal_vec2(vec2 v);
+vec3 rand_normal_vec3(vec3 v);
+
+float rand_exponential (float v);
+
+/* implementations */
+
+float rand_uniform(float v) {
+  float phase = 1.31 + mod(v * 596.459, 314.159265);
+  return fract(961.48 * cos(phase));
 }
-float rand_uniform(vec2 p, float salt) {
-  return rand_uniform(dot(p, vec2(459.8, 893.109)), salt);
+float rand_uniform(vec2 v) {
+  return rand_uniform(dot(v, vec2(89.3, 10.9)));
+}
+float rand_uniform(vec3 v) {
+  return rand_uniform(dot(v, vec3(89.3, 10.9, 46.49)));
+}
+vec2 rand_uniform_vec2(vec2 v) {
+  vec2 r = vec2(
+    rand_uniform(v.x),
+    rand_uniform(v.y)
+  );
+  return rotate(r, 0.98);
+}
+vec3 rand_uniform_vec3(vec3 v) {
+  vec3 r = vec3(
+    rand_uniform(v.x),
+    rand_uniform(v.y),
+    rand_uniform(v.z)
+  );
+  return quaternion_mul(
+    normalize(vec4(0.571, 0.167, -0.571, 0.566)),
+    r
+  );
 }
 
 vec2 box_mullar(vec2 r) {
@@ -14,25 +56,30 @@ vec2 box_mullar(vec2 r) {
   float phase = 2.0*radians(180.0) * r.y;
   return  amp * vec2(cos(phase), sin(phase));
 }
-float rand_normal(float v, float salt) {
-  return box_mullar(vec2(rand_uniform(v, salt), rand_uniform(v + 674.5, salt))).x;
+float rand_normal(float v) {
+  return rand_normal_vec2(vec2(v, 728.2)).x;
 }
-vec2 rand_normal(vec2 p, float salt) {
-  return box_mullar(vec2(rand_uniform(p.x, salt), rand_uniform(p.y, salt)));
+float rand_normal(vec2 v) {
+  return rand_normal(dot(v, vec2(22.4, 35.4)));
 }
-float rand_normal(vec3 p) {
-  return rand_normal(p.xy, p.z).x;
+float rand_normal(vec3 v) {
+  return rand_normal(dot(v, vec3(77.4, 96.0, 89.3)));
 }
-vec3 rand_normal_vec3(vec3 p) {
-  return vec3(
-    rand_normal(p.x, p.y),
-    rand_normal(p.y, p.z),
-    rand_normal(p.z, p.x)
+vec2 rand_normal_vec2(vec2 v) {
+  return box_mullar(rand_uniform_vec2(v));
+}
+vec3 rand_normal_vec3(vec3 v) {
+  vec3 r = vec3(
+    rand_normal_vec2(v.xy), rand_normal(v.z)
+  );
+  return quaternion_mul(
+    normalize(vec4(0.571, 0.167, -0.571, 0.566)),
+    r
   );
 }
 
-float rand_exponential (float v, float salt) { // inversion method
-  return -log(1.0 - rand_uniform(v, salt));
+float rand_exponential (float v) { // inversion method
+  return -log(1.0 - rand_uniform(v));
 }
 
 #endif

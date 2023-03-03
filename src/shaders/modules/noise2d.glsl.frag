@@ -16,9 +16,9 @@ float value_noise2d(vec2 point) {
     smoothstep(0.0, 1.0, ratio[2])
   );
   vec3 noise = vec3(
-    rand_normal(corners[0].x, corners[0].y),
-    rand_normal(corners[1].x, corners[1].y),
-    rand_normal(corners[2].x, corners[2].y)
+    rand_normal(corners[0]),
+    rand_normal(corners[1]),
+    rand_normal(corners[2])
   );
   weight = to_ratio(weight);
   return dot(noise, weight);
@@ -41,9 +41,9 @@ float simplex_noise2d(vec2 point) {
     ), 0.0
   );
   vec2[3] noise = vec2[](
-    rand_normal(corners[0], 89.3),
-    rand_normal(corners[1], 5.64),
-    rand_normal(corners[2], 763.0)
+    rand_normal_vec2(corners[0]),
+    rand_normal_vec2(corners[1]),
+    rand_normal_vec2(corners[2])
   );
   return dot(
     h*h*h*h,

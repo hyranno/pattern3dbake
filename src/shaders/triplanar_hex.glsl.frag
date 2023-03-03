@@ -18,13 +18,12 @@ in vec2 vUV;
 out vec4 fragColor;
 
 vec4 tiled_texture(in sampler2D samp, vec2 point, float randomness, float sharpness, float scale) {
-  float salt = 874.0;
 
   vec2[3] corners = calc_simplex2_corners_ortho(point);
   vec2[3] core = vec2[](
-    corners[0] + rand_normal(corners[0], salt) * randomness,
-    corners[1] + rand_normal(corners[1], salt) * randomness,
-    corners[2] + rand_normal(corners[2], salt) * randomness
+    corners[0] + rand_normal_vec2(corners[0]) * randomness,
+    corners[1] + rand_normal_vec2(corners[1]) * randomness,
+    corners[2] + rand_normal_vec2(corners[2]) * randomness
   );
 
   vec2[3] remains = vec2[](
@@ -33,9 +32,9 @@ vec4 tiled_texture(in sampler2D samp, vec2 point, float randomness, float sharpn
     core[2] - point
   );
   vec3 rotation = vec3(
-    rand_uniform(core[0], salt) * 2.0*radians(180.0),
-    rand_uniform(core[1], salt) * 2.0*radians(180.0),
-    rand_uniform(core[2], salt) * 2.0*radians(180.0)
+    rand_uniform(core[0]) * 2.0*radians(180.0),
+    rand_uniform(core[1]) * 2.0*radians(180.0),
+    rand_uniform(core[2]) * 2.0*radians(180.0)
   );
   vec2[3] uvs = vec2[](
     vec2(0.5) + scale * rotate(remains[0], rotation[0]),
