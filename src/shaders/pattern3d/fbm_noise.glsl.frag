@@ -6,6 +6,11 @@ precision highp float;
 uniform vec2 resolution;
 uniform sampler2D src;
 
+uniform float strength;
+uniform vec3 scale;
+uniform int depth;
+uniform float decay;
+
 in vec3 vPosition;
 in vec3 vNormal;
 in vec2 vUV;
@@ -15,8 +20,8 @@ out vec4 fragColor;
 void main() {
   vec4 baseColor = texture(src, vUV);
   fragColor = vec4(
-    baseColor.xyz + 4.0 * vec3(
-      fractional_brownian_motion(vPosition * 4.0, 4, 0.4)
+    baseColor.xyz + strength * vec3(
+      fractional_brownian_motion(vPosition * scale, depth, decay)
     ),
     baseColor.w
   );

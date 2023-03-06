@@ -10,7 +10,7 @@ const App: Component = () => {
 
   return (
     <div class={styles.App}>
-      <h2>ランタイムにおけるProceduralTextureの活用について</h2>
+      <h2>Proceduralな要素をランタイムで生成する</h2>
       <h3>前説</h3>
       <p>
         ゲーム等のグラフィックにおいて、テクスチャは結構なデータサイズを持つ。

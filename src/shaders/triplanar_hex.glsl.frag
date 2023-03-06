@@ -9,6 +9,12 @@ uniform sampler2D src;
 uniform sampler2D plane_x;
 uniform sampler2D plane_y;
 uniform sampler2D plane_z;
+uniform float scale;
+uniform float mix_ratio;
+uniform float sharpness;
+uniform float randomness;
+uniform float tile_scale;
+uniform float tile_sharpness;
 
 in vec3 vPosition;
 in vec3 vNormal;
@@ -17,15 +23,6 @@ in vec2 vUV;
 out vec4 fragColor;
 
 void main() {
-  // uniform
-  float sharpness = 9.0;
-  float mix_ratio = 1.0;
-  float scale = 10.0;
-
-  float randomness = 0.05;
-  float tile_sharpness = 9.0;
-  float tile_scale = 0.8;
-
   vec4 baseColor = texture(src, vUV);
   mat3x4 color = mat3x4(
     tiled_texture(plane_x, scale * vPosition.yz, randomness, tile_sharpness, tile_scale),

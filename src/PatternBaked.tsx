@@ -83,6 +83,10 @@ const PatternBaked: Component = () => {
     uniforms: ["resolution"],
   });
   material.setTexture("src", baseTexture);
+  material.setFloat("strength", 4.0);
+  material.setVector3("scale", new babylon.Vector3(4.0, 4.0, 4.0));
+  material.setInt("depth", 4);
+  material.setFloat("decay", 0.4);
   material.depthFunction = babylon.Constants.ALWAYS;
   generateTexture(
     scene, mesh as babylon.Mesh, material, (texture: babylon.RenderTargetTexture)=>{

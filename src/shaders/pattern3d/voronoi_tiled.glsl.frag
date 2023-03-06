@@ -6,6 +6,9 @@ precision highp float;
 uniform vec2 resolution;
 uniform sampler2D src;
 
+uniform float strength;
+uniform vec3 scale;
+
 in vec3 vPosition;
 in vec3 vNormal;
 in vec2 vUV;
@@ -15,7 +18,7 @@ out vec4 fragColor;
 void main() {
   vec4 baseColor = texture(src, vUV);
   fragColor = vec4(
-    baseColor.xyz + 0.1 * vec3(voronoi_tiled_random(vPosition * 20.0)),
+    baseColor.xyz + strength * vec3(voronoi_tiled_random(vPosition * scale)),
     baseColor.w
   );
 }

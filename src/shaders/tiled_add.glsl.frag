@@ -6,6 +6,11 @@ precision highp float;
 uniform vec2 resolution;
 uniform sampler2D src;
 uniform sampler2D tile;
+uniform float scale;
+uniform float mix_ratio;
+uniform float randomness;
+uniform float tile_scale;
+uniform float tile_sharpness;
 
 in vec3 vPosition;
 in vec3 vNormal;
@@ -14,13 +19,6 @@ in vec2 vUV;
 out vec4 fragColor;
 
 void main() {
-  float mix_ratio = 1.0;
-  float scale = 8.0;
-
-  float randomness = 0.05;
-  float tile_sharpness = 9.0;
-  float tile_scale = 0.8;
-
   fragColor = mix(
     texture(src, vUV),
     tiled_texture(tile, scale * vUV, randomness, tile_sharpness, tile_scale),

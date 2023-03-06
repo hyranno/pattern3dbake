@@ -6,21 +6,21 @@ precision highp float;
 #pragma glslify: import('../modules/random.glsl.frag')
 #pragma glslify: import('../modules/simplex2.glsl.frag')
 
+uniform vec2 scale;
+uniform vec3 base_color;
+uniform vec3 edge_color;
+uniform vec3 position_randomness;
+uniform vec3 color_randomness;
+uniform float edge_width;
+uniform float edge_smoothness;
+
 in vec2 vUV;
 
 out vec4 fragColor;
 
 void main() {
-  float scale = 10.0;
-  vec3 base_color = vec3(0.20, 0.20, 0.22);
-  vec3 edge_color = vec3(0.09, 0.08, 0.06);
-
-  vec3 position_randomness = vec3(0.07, 0.07, 0.18);
-  float position_salt = 634.0;
-  vec3 color_randomness = vec3(0.02, 0.01, 0.04);
-  float color_salt = 284.0;
-  float edge_width = 0.2;
-  float edge_smoothness = 0.4;
+  const float position_salt = 634.0;
+  const float color_salt = 284.0;
 
   vec2 point = scale * vUV;
 
