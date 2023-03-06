@@ -8,7 +8,7 @@ in vec2 vUV;
 out vec4 fragColor;
 
 void main() {
-  float scale = 10.0;
+  vec2 scale = vec2(20.0, 200.0);
   vec3 base_color = vec3(0.08, 0.20, 0.08);
   vec3 top_color = vec3(0.60, 0.80, 0.20);
 

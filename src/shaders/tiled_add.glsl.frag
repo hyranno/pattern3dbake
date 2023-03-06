@@ -15,7 +15,7 @@ out vec4 fragColor;
 
 void main() {
   float mix_ratio = 1.0;
-  float scale = 4.0;
+  float scale = 8.0;
 
   float randomness = 0.05;
   float tile_sharpness = 9.0;
