@@ -45,11 +45,6 @@ TypeScript + BabylonJS (+ SolidJS)
 
 
 TODO s
-  fbmになんか規則性が出る
-    simplexに問題はなさそうなのでfbmの問題か
-  demo兼readmeにする
-    glTFファイルでやる意味特にないか
-    gistでコード埋め込み?
   リファクタリング
     shaderのパラメータ類をuniformにする
   より具体的なマテリアル
