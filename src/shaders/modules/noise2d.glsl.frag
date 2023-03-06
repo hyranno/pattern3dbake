@@ -59,9 +59,10 @@ float simplex_noise2d(vec2 point) {
 float fractional_brownian_motion(vec2 point, int depth, float decay) {
   float result = 0.0;
   const mat3 octave_salt = mat3(mat2(2.0))  // scale
-    * mat3(mat2(cos(0.8), sin(0.8), -sin(0.8), cos(0.8)))  // rotate
-    * mat3(mat2x3(vec2(1.0, 0.0), vec2(0.0, 1.0), vec2(123.2, 214.3)))  // translate
+    * mat3(mat2(cos(0.7), sin(0.7), -sin(0.7), cos(0.7)))  // rotate
+    * mat3(mat3x2(vec2(1.0, 0.0), vec2(0.0, 1.0), vec2(123.2, 214.3)))  // translate
   ;
+
   vec3 p = vec3(point, 1.0);
   float weight = 1.0;
   for (int i=0; i<depth; i++) {
