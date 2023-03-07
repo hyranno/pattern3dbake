@@ -45,8 +45,6 @@ TypeScript + BabylonJS (+ SolidJS)
 
 
 TODO s
-  リファクタリング
-    shaderのパラメータ類をuniformにする
   より具体的なマテリアル
 
 
@@ -105,5 +103,9 @@ vrmつかう?
 babylonJSは左手系(+zが奥方向)
 scene間でmeshの共有は難しそう
 
-これはマテリアルに対するものだが、メッシュに対しても同様のことが言える
-ジオメトリシェーダなどで変形後のメッシュを保存できるか？
+これはテクスチャに対するものだが、メッシュに対しても同様のことが言える
+  ComputeShaderでやる
+  TransformFeedbackでもできるが、避けた方がよい
+    OpenGL用の機能で、それ以外だと基本的にComputeShaderでやるものっぽい
+    というかハードウェアと嚙み合わなくてterribleなものらしい
+    https://www.gfxstrand.net/faith/blog/2018/10/transform-feedback-is-terrible-so-why/
